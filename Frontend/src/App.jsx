@@ -30,27 +30,27 @@ export default function App() {
         <Route path="/verify" element={<OpenRoute><VerifyOtp /></OpenRoute>} />
 
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>}>
-            <Route path="/dashboard" element={<ClassList />} />
+          <Route path="/dashboard" element={<ClassList />} />
 
-            <Route path="/dashboard/own/:classroomID" element={<ClassroomOwner />} >
-              <Route path="/dashboard/own/:classroomID/posts" element={<UploadPost />} />
-              <Route path="/dashboard/own/:classroomID/video" element={<UploadVideo />} />
-              <Route path="/dashboard/own/:classroomID/video/:videoID" element={<Player />} />
-              <Route path="/dashboard/own/:classroomID/stream" element={<StreamDashboard />} />
-              <Route path="/dashboard/own/:classroomID/people" element={<Peoples />} />
-              <Route path="/dashboard/own/:classroomID/setting" element={<Setting />} />
+          <Route path="/dashboard/own/:classroomID" element={<ClassroomOwner />} >
+            <Route path="/dashboard/own/:classroomID/posts" element={<UploadPost />} />
+            <Route path="/dashboard/own/:classroomID/video" element={<UploadVideo />} />
+            <Route path="/dashboard/own/:classroomID/video/:videoID" element={<Player />} />
+            <Route path="/dashboard/own/:classroomID/stream" element={<StreamDashboard />} />
+            <Route path="/dashboard/own/:classroomID/people" element={<Peoples />} />
+            <Route path="/dashboard/own/:classroomID/setting" element={<Setting />} />
 
-            </Route>
+          </Route>
 
-            <Route path="/dashboard/joined/:classroomID" element={<ClassroomStudent />} > 
-              <Route path="/dashboard/joined/:classroomID/posts" element={<Posts />} />
-              <Route path="/dashboard/joined/:classroomID/video" element={<Videos />} />
-              <Route path="/dashboard/joined/:classroomID/video/:videoID" element={<Player />} />
-              <Route path="/dashboard/joined/:classroomID/stream" element={<>Comign Soon..</>} />
-            </Route>
+          <Route path="/dashboard/joined/:classroomID" element={<ClassroomStudent />} >
+            <Route path="/dashboard/joined/:classroomID/posts" element={<Posts />} />
+            <Route path="/dashboard/joined/:classroomID/video" element={<Videos />} />
+            <Route path="/dashboard/joined/:classroomID/video/:videoID" element={<Player />} />
+            <Route path="/dashboard/joined/:classroomID/stream" element={<>Comign Soon..</>} />
+          </Route>
 
         </Route>
-        
+
         <Route path="/test" element={<Player />} />
 
       </Routes>
