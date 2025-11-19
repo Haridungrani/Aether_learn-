@@ -1,47 +1,48 @@
 import { toast } from "react-toastify";
-import { setLoading,setSignupData  } from "../../slices/auth";
+import { setLoading, setSignupData } from "../../slices/auth";
 import { apiConnector } from "../connector";
-import { setToken , setUser } from "../../slices/profile";
+import { setToken, setUser } from "../../slices/profile";
+import Cookies from 'js-cookie';
 
 
 export function sendOtp(email, navigate) {
-    return async (dispatch) => {
-      const toastId = toast.loading("Loading...")
-      dispatch(setLoading(true))
-      try {
-        const response = await apiConnector("POST", 'http://localhost:4000/api/v1/auth/sendotp', {email, checkUserPresent: true,})
-        if(!response.data.success) {
-            throw new Error(response.data.message)
-          }
-          toast.success("OTP Sent Successfully")
-          navigate("/verify")
-      }
-       catch (error) {
-        console.log("SENDOTP API ERROR............", error)
-        toast.error("Could Not Send OTP")
-      }
-      dispatch(setLoading(false))
-      toast.dismiss(toastId)
-    }
-}
-
-export function signUp(accountType,  firstName, lastName, email, password, confirmPassword , otp, navigate){
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-        otp = otp.join('');
-       const response = await apiConnector("POST", 'http://localhost:4000/api/v1/auth/signup', {accountType,  firstName, lastName, email, password,confirmPassword,  otp})
-       
-        if(!response.data.success){
-          
-          throw new Error(response.data.msg)
-        }
-        toast.success("Signup Success");
-        dispatch(setSignupData(null))
-        navigate('/login');
+      const response = await apiConnector("POST", 'http://localhost:4000/api/v1/auth/sendotp', { email, checkUserPresent: true, })
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+      toast.success("OTP Sent Successfully")
+      navigate("/verify")
     }
-     catch (error) {
+    catch (error) {
+      console.log("SENDOTP API ERROR............", error)
+      toast.error("Could Not Send OTP")
+    }
+    dispatch(setLoading(false))
+    toast.dismiss(toastId)
+  }
+}
+
+export function signUp(accountType, firstName, lastName, email, password, confirmPassword, otp, navigate) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Loading...")
+    dispatch(setLoading(true))
+    try {
+      otp = otp.join('');
+      const response = await apiConnector("POST", 'http://localhost:4000/api/v1/auth/signup', { accountType, firstName, lastName, email, password, confirmPassword, otp })
+
+      if (!response.data.success) {
+
+        throw new Error(response.data.msg)
+      }
+      toast.success("Signup Success");
+      dispatch(setSignupData(null))
+      navigate('/login');
+    }
+    catch (error) {
       console.log("SignUp API ERROR............", error)
       toast.error(error.message)
     }
@@ -50,27 +51,27 @@ export function signUp(accountType,  firstName, lastName, email, password, confi
   }
 }
 
-export  function login(email,password,navigate){
+export function login(email, password, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-      const response = await apiConnector("POST", 'http://localhost:4000/api/v1/auth/login', {email, password,})
+      const response = await apiConnector("POST", 'http://localhost:4000/api/v1/auth/login', { email, password, })
       console.log("LOGIN API RESPONSE............", response)
 
-      if(!response.data.success) {
+      if (!response.data.success) {
         throw new Error(response.data.message)
       }
       toast.success("Login Successful")
       dispatch(setToken(response.data.token))
-      dispatch(setUser({ ...response.data.user}))
-      
+      dispatch(setUser({ ...response.data.user }))
+
       localStorage.setItem("token", JSON.stringify(response.data.token))
       localStorage.setItem("user", JSON.stringify(response.data.user))
-     
-    navigate('/dashboard')
+
+      navigate('/dashboard')
     }
-     catch (error) {
+    catch (error) {
       console.log("LOGIN API ERROR............", error)
       toast.error(error.message)
     }
@@ -85,7 +86,9 @@ export function logout(navigate) {
     dispatch(setUser(null))
     localStorage.removeItem("token")
     localStorage.removeItem("user")
-    navigate("/dashboard")
+    // Clear cookies as well
+    Cookies.remove("token")
+    navigate("/login")
     toast.success("Logged Out")
   }
 }

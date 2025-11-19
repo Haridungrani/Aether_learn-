@@ -13,7 +13,7 @@ import useOnClickOutside from "../../hooks/useOnClickOutside"
 
 const JoinClassroom = () => {
 
-  // const { user } = useSelector((state) => state.profile)
+  const { user } = useSelector((state) => state.profile)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -23,8 +23,9 @@ const JoinClassroom = () => {
   const [openCreate, setOpenCreate] = useState(false);
 
   useOnClickOutside(ref, () => setOpen(false))
-  // if(!user) return null
 
+  // Check if user is faculty or admin
+  const isFaculty = user?.role === 'faculty' || user?.role === 'admin';
 
   return (
     <>
@@ -35,9 +36,12 @@ const JoinClassroom = () => {
         {open && (
           <div onClick={(e) => e.stopPropagation()} ref={ref} className="DropDownContainer_22" >
 
-            <div onClick={() => { setOpen(false); setOpenCreate(true); }} className="linkAtDropDown_22" >
-              Create Class
-            </div>
+            {/* Show "Create Class" only for Faculty/Admin */}
+            {isFaculty && (
+              <div onClick={() => { setOpen(false); setOpenCreate(true); }} className="linkAtDropDown_22" >
+                Create Class
+              </div>
+            )}
 
             <div onClick={() => { setOpen(false); setJoinModal(true); }} className="linkAtDropDown_22" >
               Join Class
@@ -46,7 +50,7 @@ const JoinClassroom = () => {
           </div>
         )}
       </button>
-      {openCreate && <CreateModal setOpen={setOpenCreate}/>}
+      {openCreate && <CreateModal setOpen={setOpenCreate} />}
       {openJoin && <JoinModal setOpen={setJoinModal} />}
 
     </>

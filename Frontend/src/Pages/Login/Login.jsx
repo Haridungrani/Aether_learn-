@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import s from "./Login.module.css";
 import Logo from "../../assets/aetherlearn-high-resolution-logo-black-transparent.png";
-import { Link } from 'react-router-dom';import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'; import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import {login} from '../../services/operation/authApi'
+import { login } from '../../services/operation/authApi'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -47,7 +47,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!errors.email && !errors.password){
+    if (!errors.email && !errors.password) {
       const { email, password } = formData
       dispatch(login(email, password, navigate))
       console.log('Form submitted:', formData);
@@ -60,15 +60,16 @@ const Login = () => {
         <form className={s.form} onSubmit={handleSubmit}>
           <h1>Sign in</h1>
           <p>You don't have an account? <Link to="/signup" className='linkFix'>Sign Up</Link></p>
-            
+
           <div className={s.fieldContainer}>
             <p>Email :</p>
             <input
-              type="text"
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder='johndoe@gmail.com'
+              autoComplete="off"
               required
             />
             {errors.email && <span className="error">{errors.email}</span>}
@@ -82,6 +83,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder='Minimum 6 Character long'
+              autoComplete="new-password"
               required
             />
             {errors.password && <span className="error">{errors.password}</span>}

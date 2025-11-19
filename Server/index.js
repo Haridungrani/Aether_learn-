@@ -19,37 +19,29 @@ dbConnect();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-    cors({
-        credentials: true,
-        origin: ["http://localhost:5173","*"],
-    })
+  cors({
+    credentials: true,
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  })
 );
 
 
 //routes
 app.use("/api/v1/auth", userRoutes);
 
-
-app.get("/", (req, res) => {
-	return res.json({
-		success:true,
-		message:'Your server is up and running....'
-	});
-});
-
-
-app.listen(PORT, () => {
-	console.log(`App is running at ${PORT}`);
-  });
-
 const classroutes = require('./routes/Class.route')
-
-app.use('/class',classroutes)
+app.use('/class', classroutes)
 
 const postroutes = require('./routes/Post.route')
+app.use('/api/v1/post', postroutes)
 
-app.use('/api/v1/post',postroutes)
+app.get("/", (req, res) => {
+  return res.json({
+    success: true,
+    message: 'Your server is up and running....'
+  });
+});
 
-const awsRoute = require('./routes/Aws.route')
-
-app.use('/api/v1/aws',awsRoute)
+app.listen(PORT, () => {
+  console.log(`App is running at ${PORT}`);
+});

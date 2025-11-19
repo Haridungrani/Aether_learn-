@@ -13,8 +13,26 @@
     flex-wrap: wrap;
 }
 
-.h1Title{
+.h1Title {
     width: 100%;
     font-weight: 500;
     font-size: x-large;
+}
+
+.emptyState {
+    width: 100%;
+    padding: 40px 20px;
+    text-align: center;
+    color: #666;
+}
+
+.emptyState h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.emptyState p {
+    font-size: 1rem;
+    color: #888;
 }

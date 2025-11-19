@@ -11,15 +11,16 @@ import { logout } from "../../services/operation/authApi"
 
 
 export default function ProfileDropdown() {
-  // const { user } = useSelector((state) => state.profile)
+  const { user } = useSelector((state) => state.profile)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
   useOnClickOutside(ref, () => setOpen(false))
-  // if(!user) return null
 
+  // Get user's full name
+  const userName = user?.firstName ? `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}` : 'User'
 
   return (
     <>
@@ -32,7 +33,7 @@ export default function ProfileDropdown() {
           <div onClick={(e) => e.stopPropagation()} ref={ref} className="DropDownContainer_22" >
 
             <div className="linkAtDropDown_22">
-              👋 Hey,Nishant
+              Hey, {userName}
             </div>
 
             <div onClick={() => { dispatch(logout(navigate)); setOpen(false); }} className="linkAtDropDown_22" >
